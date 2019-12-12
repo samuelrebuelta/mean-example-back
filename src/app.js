@@ -31,7 +31,7 @@ app.post('/brands', (request, response, next) => {
     // Check if exist
     Brand.exists({ brandName: request.body.brandName })
         .then((alreadyExists) => {
-            if (alreadyExists) {
+            if (alreadyExists && (request.body.modelDescription || request.body.modelDescription !== '')) {
                 Brand.find({ brandName: request.body.brandName }).then(elems => {
                     const currentElement = elems[0];
                     const modelAlreadyExists = currentElement.models.some(el => el.modelDescription === request.body.modelDescription);
@@ -46,7 +46,7 @@ app.post('/brands', (request, response, next) => {
                     }
                 })
 
-            } else {
+            } else if (!alreadyExists) {
                 const brand = new Brand({
                     id: request.body._id,
                     brandName: request.body.brandName,
@@ -55,6 +55,8 @@ app.post('/brands', (request, response, next) => {
                 brand.save()
                     .then((result) => { response.status(201).json({ message: 'Brand added succesfully', result }); })
                     .catch(error => response.status(400).json({ message: 'Error', error }));
+            } else {
+                response.status(200).json({ message: 'You cannot add an empty model name' });
             }
         })
         .catch(error => response.status(400).json({ message: 'Error', error }));
