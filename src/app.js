@@ -6,9 +6,13 @@ const BrandController = require('./controllers/brand')
 
 const app = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/mean-example', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+// LOCAL DB
+// mongoose.connect('mongodb://127.0.0.1:27017/mean-example', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+
+// CLOUD DB --- PASS: admin
+mongoose.connect('mongodb+srv://admin:admin@cluster0-wt6n8.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('CONNECTED TO DATABASE! :)'))
-    .catch(() => console.log('CONNECTION FAILED! :('));
+    .catch((error) => console.log('CONNECTION FAILED! :(', error));
 
 app.use(bodyParser.json());
 

@@ -38,7 +38,8 @@ exports.postBrand = (request, response, next) => {
                 const brand = new Brand({
                     id: request.body._id,
                     brandName: request.body.brandName,
-                    models: [{ modelDescription: request.body.modelDescription }],
+                    models: request.body.modelDescription && request.body.modelDescription !== '' ?
+                        [{ modelDescription: request.body.modelDescription }] : [],
                 });
                 brand.save()
                     .then((result) => { response.status(201).json({ message: 'Brand added succesfully', result }); })
