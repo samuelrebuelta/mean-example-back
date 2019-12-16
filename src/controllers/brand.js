@@ -45,8 +45,24 @@ exports.postBrand = (request, response, next) => {
                     .then((result) => { response.status(201).json({ message: 'Brand added succesfully', result }); })
                     .catch(error => response.status(400).json({ message: 'Error', error }));
             } else {
-                response.status(200).json({ message: 'You cannot add an empty model name' });
+                response.status(400).json({ message: 'This brand already exists. You cannot add an empty model name' });
             }
         })
+        .catch(error => response.status(400).json({ message: 'Error', error }));
+}
+
+// UPDATE BRAND NAME METHOD
+exports.updateBrandName = (request, response, next) => {
+    const brand = { brandName: request.body.value }
+    Brand.findByIdAndUpdate({ _id: request.params.id }, { $set: brand }, { upsert: true, new: true })
+        .then(elems => response.status(200).json({ message: 'Brand name updated succesfully' }))
+        .catch(error => response.status(400).json({ message: 'Error', error }));
+}
+
+// DELETE MODEL METHOD
+exports.deleteModel = (request, response, next) => {
+    const modelIdToRemove = request.params.modelId;
+    Brand.updateOne({ _id: request.params.id }, { $pull: { models: { _id: modelIdToRemove } } }, { upsert: true, new: true })
+        .then((result) => { response.status(200).json({ message: 'Model deleted succesfully', result }); })
         .catch(error => response.status(400).json({ message: 'Error', error }));
 }

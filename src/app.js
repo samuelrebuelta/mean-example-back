@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use((request, response, next) => {
     response.setHeader('Access-Controll-Allow-Origin', '*');
     response.setHeader('Access-Controll-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    response.setHeader('Access-Controll-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
+    response.setHeader('Access-Controll-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
     next();
 });
 
@@ -31,5 +31,11 @@ app.post('/brands', BrandController.postBrand);
 
 // DELETE METHOD
 app.delete('/brands/:id/delete', BrandController.deleteBrand);
+
+// UPDATE METHOD
+app.patch('/brands/:id/update', BrandController.updateBrandName);
+
+// DELETE MODEL METHOD
+app.delete('/brands/:id/models/:modelId/delete', BrandController.deleteModel);
 
 module.exports = app;
