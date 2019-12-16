@@ -2,7 +2,7 @@ const Brand = require('../models/brand');
 
 // GET BRANDS METHOD
 exports.fetchBrands = (request, response, next) => {
-    Brand.find()
+    Brand.find().sort({brandName: 'asc'})
         .then(data => { response.status(200).json({ message: 'Data fetched succesfully', data }); })
         .catch(error => response.status(400).json({ message: 'Error', error }));
 }
