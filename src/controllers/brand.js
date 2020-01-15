@@ -1,21 +1,21 @@
-const Brand = require('../models/brand');
+const Brand = require('../models/brand.model');
 
 // GET BRANDS METHOD
-exports.fetchBrands = (request, response, next) => {
+exports.fetchBrands = (request, response) => {
     Brand.find().sort({brandName: 'asc'})
         .then(data => { response.status(200).json({ message: 'Data fetched succesfully', data }); })
         .catch(error => response.status(400).json({ message: 'Error', error }));
 }
 
 // DELETE BRAND METHOD
-exports.deleteBrand = (request, response, next) => {
+exports.deleteBrand = (request, response) => {
     Brand.deleteOne(request.id)
         .then((result) => { response.status(200).json({ message: 'Brand deleted succesfully', result }); })
         .catch(error => response.status(400).json({ message: 'Error', error }));
 }
 
 // POST BRAND METHOD
-exports.postBrand = (request, response, next) => {
+exports.postBrand = (request, response) => {
     // Check if exist
     Brand.exists({ brandName: request.body.brandName })
         .then((alreadyExists) => {
@@ -52,7 +52,7 @@ exports.postBrand = (request, response, next) => {
 }
 
 // UPDATE BRAND NAME METHOD
-exports.updateBrandName = (request, response, next) => {
+exports.updateBrandName = (request, response) => {
     const brand = { brandName: request.body.value }
     Brand.findByIdAndUpdate({ _id: request.params.id }, { $set: brand }, { upsert: true, new: true })
         .then(elems => response.status(200).json({ message: 'Brand name updated succesfully' }))
@@ -60,7 +60,7 @@ exports.updateBrandName = (request, response, next) => {
 }
 
 // DELETE MODEL METHOD
-exports.deleteModel = (request, response, next) => {
+exports.deleteModel = (request, response) => {
     const modelIdToRemove = request.params.modelId;
     Brand.updateOne({ _id: request.params.id }, { $pull: { models: { _id: modelIdToRemove } } }, { upsert: true, new: true })
         .then((result) => { response.status(200).json({ message: 'Model deleted succesfully', result }); })
