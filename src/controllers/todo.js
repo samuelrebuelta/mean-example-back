@@ -26,3 +26,9 @@ exports.updateItem = (request, response) => {
         .then(elems => response.status(200).json({ message: 'Item status updated succesfully' }))
         .catch(error => response.status(400).json({ message: 'Error', error }));
 }
+
+exports.deleteItem = (request, response) => {
+    Todo.deleteOne({ _id: request.params.id })
+        .then(elems => response.status(200).json({ message: 'Item deleted succesfully' }))
+        .catch(error => response.status(400).json({ message: 'Error', error }));
+}

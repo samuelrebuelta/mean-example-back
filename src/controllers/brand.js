@@ -2,14 +2,14 @@ const Brand = require('../models/brand.model');
 
 // GET BRANDS METHOD
 exports.fetchBrands = (request, response) => {
-    Brand.find().sort({brandName: 'asc'})
+    Brand.find().sort({ brandName: 'asc' })
         .then(data => { response.status(200).json({ message: 'Data fetched succesfully', data }); })
         .catch(error => response.status(400).json({ message: 'Error', error }));
 }
 
 // DELETE BRAND METHOD
 exports.deleteBrand = (request, response) => {
-    Brand.deleteOne(request.id)
+    Brand.deleteOne({ _id: request.params.id })
         .then((result) => { response.status(200).json({ message: 'Brand deleted succesfully', result }); })
         .catch(error => response.status(400).json({ message: 'Error', error }));
 }
